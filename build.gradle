@@ -8,10 +8,11 @@ repositories {
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
-
+configurations {
+    providedCompile
+}
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
-//    compile 'ru.lanwen.verbalregex:java-verbal-expressions:1.4'
-//    provided 'ru.lanwen.verbalregex:java-verbal-expressions:1.4'
     providedCompile 'ru.lanwen.verbalregex:java-verbal-expressions:1.4'
+
 }
