@@ -7,7 +7,7 @@
 
 
 
-compile 'com.github.djun100:UtilDeskTop:9c01f636be053a6fe234e02ac8b26c7d61033ac9'
+compile 'com.github.djun100:UtilDeskTop:439c1f41909a6a2d2b882cbfee61e6e7aa0f41e1'
 
 if use regex,compile
 
