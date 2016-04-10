@@ -1,3 +1,5 @@
+package com.cy.util;
+
 import ru.lanwen.verbalregex.VerbalExpression;
 
 /**
