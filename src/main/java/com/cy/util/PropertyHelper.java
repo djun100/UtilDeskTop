@@ -34,8 +34,24 @@ public class PropertyHelper {
     *            主键
     * @return String
     */
-    public static String getKeyValue(String key) {
+    public static String getValue(String key) {
         return props.getProperty(key);
+    }
+    /**
+    * 读取属性文件中相应键的值
+    * @param key
+    *            主键
+    * @return String
+    */
+    public static String getValue(String key,boolean needSetNullIfNotExist) {
+        String value=props.getProperty(key);
+
+        if (needSetNullIfNotExist){
+            if (value==null){
+                updateProperties(key,"");
+            }
+        }
+        return value;
     }
     /**
     * 根据主键key读取主键的值value
