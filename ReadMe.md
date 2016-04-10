@@ -6,7 +6,7 @@
     }
 
 
-compile 'com.github.djun100:UtilDeskTop:a423c164b6f40d099d51dfc360d76ac8dbb81fff'
+compile 'com.github.djun100:UtilDeskTop:f3c6f5fd84d4bbeac04e0aa68dce71fd66a87d5d'
 
 if use regex,compile
 
