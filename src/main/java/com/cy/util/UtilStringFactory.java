@@ -69,12 +69,14 @@ public class UtilStringFactory {
                 "                    android:layout_toRightOf=\"@id/tvTimeBegin\"\n" +
                 "\n" +
                 "                     />";
+
+        String orignLine="android:id=\"@+id/newMemor_StartTime\"" ;
         ArrayList<String> regex=new ArrayList<String>();
         regex.add("=");
         regex.add("[a-zA-Z_0-9:]+");//
-//        regex.add("[^\\t\\n\\x0B\\f\\r][a-zA-Z_0-9:]+^=");
-        String formatOut="public static String URL_=\"%s\"";
-        String result=processFactory(attr,regex,formatOut);
+        regex.add("[^=](.*)");
+        String formatOut="<item name=\"%s\">%s</item>";
+        String result=processFactory(orignLine,regex,formatOut);
         System.out.println(result);
 
     }
