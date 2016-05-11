@@ -49,15 +49,16 @@ public class UtilStringFactory {
     }
 
     public static void main(String[] args){
-        String orignLine="资金账户管理（6）http://demo.abc.com/APP/app_fundAccountManage.aspx dd";
-        ArrayList<String> regex=new ArrayList<String>();
-        regex.add("http://");
-        regex.add("");
-        regex.add("http://[a-zA-Z0-9_/.]+.aspx");
-        String formatOut="public static String URL_=\"%s\"";
-//        String formatOut="public static String URL_%s=\"%s\"";
-        String result=processFactory(orignLine,regex,formatOut);
-        System.out.println(result);
+//        String orignLine="资金账户管理（6）http://demo.abc.com/APP/app_fundAccountManage.aspx dd";
+//        ArrayList<String> regex=new ArrayList<String>();
+//        regex.add("http://");
+//        regex.add("");
+//        regex.add("http://[a-zA-Z0-9_/.]+.aspx");
+//        String formatOut="public static String URL_=\"%s\"";
+////        String formatOut="public static String URL_%s=\"%s\"";
+//        String result=processFactory(orignLine,regex,formatOut);
+//        System.out.println(result);
+        testAttrToStyle();
     }
 
     public static void testAttrToStyle(){
@@ -70,8 +71,11 @@ public class UtilStringFactory {
                 "                     />";
         ArrayList<String> regex=new ArrayList<String>();
         regex.add("=");
-        regex.add("");
-        regex.add("http://[a-zA-Z0-9_/.]+.aspx");
+        regex.add("[a-zA-Z_0-9:]+");//
+//        regex.add("[^\\t\\n\\x0B\\f\\r][a-zA-Z_0-9:]+^=");
         String formatOut="public static String URL_=\"%s\"";
+        String result=processFactory(attr,regex,formatOut);
+        System.out.println(result);
+
     }
 }
