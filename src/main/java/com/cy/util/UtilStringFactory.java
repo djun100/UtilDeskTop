@@ -51,11 +51,27 @@ public class UtilStringFactory {
     public static void main(String[] args){
         String orignLine="资金账户管理（6）http://demo.abc.com/APP/app_fundAccountManage.aspx dd";
         ArrayList<String> regex=new ArrayList<String>();
-        regex.add("(http://){1}");
-        regex.add("(http://){1}[a-zA-Z0-9_/.]+(.aspx){1}");
+        regex.add("http://");
+        regex.add("");
+        regex.add("http://[a-zA-Z0-9_/.]+.aspx");
         String formatOut="public static String URL_=\"%s\"";
 //        String formatOut="public static String URL_%s=\"%s\"";
         String result=processFactory(orignLine,regex,formatOut);
         System.out.println(result);
+    }
+
+    public static void testAttrToStyle(){
+        String attr="                <TextView\n" +
+                "                    android:id=\"@+id/newMemor_StartTime\"\n" +
+                "                    style=\"@style/NewMemorActivity_tv_value\"\n" +
+                "                    android:layout_marginLeft=\"10dp\"\n" +
+                "                    android:layout_toRightOf=\"@id/tvTimeBegin\"\n" +
+                "\n" +
+                "                     />";
+        ArrayList<String> regex=new ArrayList<String>();
+        regex.add("=");
+        regex.add("");
+        regex.add("http://[a-zA-Z0-9_/.]+.aspx");
+        String formatOut="public static String URL_=\"%s\"";
     }
 }
