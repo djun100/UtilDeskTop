@@ -1,7 +1,6 @@
 package com.cy.util;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -69,7 +68,21 @@ public class UtilStringFactory {
 ////        String formatOut="public static String URL_%s=\"%s\"";
 //        String result=processFactory(orignLine,regex,formatOut);
 //        System.out.println(result);
+//        testAttrLineToItem();
         testAttrToStyle();
+    }
+
+    public static String testAttrLineToItem(String orignLine){
+
+//        orignLine="android:id=\"@+id/newMemor_StartTime\"" ;
+        ArrayList<String> regex=new ArrayList<String>();
+        regex.add("=");
+        regex.add("[a-zA-Z_0-9:]+");//
+        regex.add("=\"(.*)\"");
+        String formatOut="<item name=\"%s\">%s</item>";
+        String result=processFactory(orignLine,regex,formatOut);
+        System.out.println(result);
+        return result;
     }
 
     public static void testAttrToStyle(){
@@ -80,15 +93,15 @@ public class UtilStringFactory {
                 "                    android:layout_toRightOf=\"@id/tvTimeBegin\"\n" +
                 "\n" +
                 "                     />";
-
-        String orignLine="android:id=\"@+id/newMemor_StartTime\"" ;
-        ArrayList<String> regex=new ArrayList<String>();
-        regex.add("=");
-        regex.add("[a-zA-Z_0-9:]+");//
-        regex.add("=\"(.*)\"");
-        String formatOut="<item name=\"%s\">%s</item>";
-        String result=processFactory(orignLine,regex,formatOut);
-        System.out.println(result);
-
+        ArrayList<String> results=new ArrayList<>();
+        String[] ss = attr.split("\n");
+        for (int i = 0; i < ss.length; i++) {
+            System.out.println("当前处理行："+ss[i]);
+            results.add(testAttrLineToItem(ss[i]));
+        }
+        System.out.println("结果");
+        for (String temp:results){
+            System.out.println(temp);
+        }
     }
 }
