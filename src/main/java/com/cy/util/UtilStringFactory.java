@@ -1,6 +1,7 @@
 package com.cy.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,10 +32,19 @@ public class UtilStringFactory {
         Matcher m = p.matcher(originLine); // 获取 matcher 对象
         if (m.find()){
             for (int i = 1; i < regexExtract.size(); i++) {
+                boolean isContainsGroup=false;
+                if (regexExtract.get(i).contains("(")){
+                    isContainsGroup=true;
+                }
                 p=Pattern.compile(regexExtract.get(i));
                 m=p.matcher(originLine);
+                String keyInfo;
                 if (m.find()){
-                    String keyInfo=m.group();
+                    if (isContainsGroup){
+                        keyInfo=m.group(1);
+                    }else {
+                        keyInfo=m.group();
+                    }
                     System.out.println("关键信息："+keyInfo);
                     keys.add(keyInfo);
                 }else {
@@ -44,7 +54,8 @@ public class UtilStringFactory {
         }else {
             return null;
         }
-        String result=String.format(formatOut,keys);
+
+        String result=String.format(formatOut, keys.toArray());
         return result;
     }
 
@@ -74,7 +85,7 @@ public class UtilStringFactory {
         ArrayList<String> regex=new ArrayList<String>();
         regex.add("=");
         regex.add("[a-zA-Z_0-9:]+");//
-        regex.add("[^=](.*)");
+        regex.add("=\"(.*)\"");
         String formatOut="<item name=\"%s\">%s</item>";
         String result=processFactory(orignLine,regex,formatOut);
         System.out.println(result);
