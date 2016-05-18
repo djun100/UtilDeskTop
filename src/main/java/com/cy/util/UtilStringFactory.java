@@ -1,5 +1,9 @@
 package com.cy.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -9,19 +13,15 @@ import java.util.regex.Pattern;
  * Created by cy on 2016/5/8.
  */
 public class UtilStringFactory {
-    /**<pre>按正则格式提取原文中的有用信息并按正则格式返回
-     * eg:资金账户管理（6）http://demo.abc.com/APP/app_fundAccountManage.aspx
-     * 账户相关与系统设置（13）http://demo.shbgz.com/APP/app_accountSystemSettings.aspx
-     * @param originLine 原文任意行信息
-     * @param regexExtract 按该正则从关键行提取关键信息
-     *                     positon 0:关键行，position 1：关键信息1，position 2：关键信息2...
-     * @param  formatOut 按照关键信息提取顺序，将提取的行信息按格式化输出
-     *                   eg:public static String URL_%s="%s";
-     *
-     *
+
+    /**按正则格式提取原文中的有用信息并按正则格式返回
+     * @param originLine 当前分析行内容
+     * @param regexExtract position 0:特征行正则  position 1：特征内容
+     * @param formatOut 特征内容格式化输出
+     *                  按照关键信息提取顺序，将提取的行信息按格式化输出
+     *                  eg:public static String URL_%s="%s";
      *
      * <pre>todo 给出示例关键信息，反推正则表达式，列出相似性匹配结果
-     *
      * */
     public static String processFactory(String originLine, List<String>regexExtract, String formatOut){
         // TODO: 2016/5/8 按正则提取有用信息
@@ -44,7 +44,7 @@ public class UtilStringFactory {
                     }else {
                         keyInfo=m.group();
                     }
-                    System.out.println("关键信息："+keyInfo);
+//                    logger.info("关键信息："+keyInfo);
                     keys.add(keyInfo);
                 }else {
                     throw new RuntimeException("未在关键行匹配到关键信息");
@@ -56,6 +56,48 @@ public class UtilStringFactory {
 
         String result=String.format(formatOut, keys.toArray());
         return result;
+    }
+
+    /**逐行分析文件，按正则获取格式化特征值
+     * @param regexes position 0:特征行正则  position 1：特征内容
+     * */
+    public static String extractFeatureFromFile(String pathName,ArrayList<String> regexes){
+
+        File file = new File(pathName);
+        BufferedReader reader = null;
+        int lengthHasRead=0;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+            String tempString = null;
+            int line = 1;
+            // 一次读入一行，直到读入null为文件结束
+            while ((tempString = reader.readLine()) != null) {
+
+                String temp=processFactory(tempString,regexes,"%s");
+                if (temp!=null){
+                    // 显示行号
+//                    logger.info("在line " + line + "提取出特征结果:" + temp+" 于"+pathName);
+                    return temp;
+                }
+
+                lengthHasRead+=tempString.length();
+
+
+                line++;
+            }
+            reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (reader != null) {
+                try {
+                    reader.close();
+                } catch (IOException e1) {
+                }
+            }
+        }
+        return null;
     }
 
     public static void main(String[] args){
