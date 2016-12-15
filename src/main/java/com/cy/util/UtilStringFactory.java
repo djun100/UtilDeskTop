@@ -19,13 +19,14 @@ public class UtilStringFactory {
 
     /**按正则格式提取原文中的有用信息并按正则格式返回
      * @param originLine 当前分析行内容
-     * @param regexExtract position 0:特征行正则  position 1：特征内容
+     * @param lineFeature  特征行正则
+     * @param regexExtract 与输出%s数量对应的若干特征内容正则
      * @param formatOut 特征内容格式化输出
      *                  按照关键信息提取顺序，将提取的行信息按格式化输出
      *                  eg:public static String URL_%s="%s";
      *
      * <pre>todo 给出示例关键信息，反推正则表达式，列出相似性匹配结果
-     * */
+     * @return*/
     public static String processFactory(String originLine,String lineFeature, List<String>regexExtract, String formatOut){
         // TODO: 2016/5/8 按正则提取有用信息
         // TODO: 2016/5/8 判断该行是否为匹配行，是→继续
