@@ -1,6 +1,6 @@
 package com.cy.util;
 
-import DataStructure.UtilString;
+import com.cy.DataStructure.UtilString;
 
 import java.io.*;
 import java.nio.ByteBuffer;
