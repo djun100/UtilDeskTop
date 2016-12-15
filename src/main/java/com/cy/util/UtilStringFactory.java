@@ -69,7 +69,7 @@ public class UtilStringFactory {
      * @param formatOut
      * @return
      */
-    public static List<String> dealLines(String contentLines, String lineFeature, List<String> regexExtract, String formatOut){
+    public static List<String> dealLinesList(String contentLines, String lineFeature, List<String> regexExtract, String formatOut){
         ArrayList<String> results=new ArrayList<>();
         String[] ss = contentLines.split("\n");
 
@@ -81,6 +81,25 @@ public class UtilStringFactory {
             }
         }
         return results;
+    }
+
+    /**处理多行数据
+     * @param contentLines
+     * @param lineFeature
+     * @param regexExtract
+     * @param formatOut
+     * @return
+     */
+    public static String dealLines(String contentLines, String lineFeature, List<String> regexExtract, String formatOut){
+        StringBuilder sb=new StringBuilder();
+        List<String> results=dealLinesList(contentLines,lineFeature,regexExtract,formatOut);
+        int size=results.size();
+        if (size==0) return "";
+
+        for (int i = 0; i < size; i++) {
+            sb.append(results.get(i)).append(i==size-1?"":"\n");
+        }
+        return sb.toString();
     }
 
     /**逐行分析文件，按正则获取格式化特征值
@@ -121,18 +140,19 @@ public class UtilStringFactory {
     }
 
     public static void main(String[] args){
-//        testUrlExtract();
-        testAttrToStyle();
+        testUrlExtract();
+//        testAttrToStyle();
     }
 
     private static void testUrlExtract() {
-        String orignLine="资金账户管理（6）http://demo.abc.com/APP/app_fundAccountManage.aspx 备注：xxxx";
+        String orignLine="资金账户管理（5）http://demo.abc.com/APP/app_fundAccountManage.aspx 备注：xxxx\n" +
+                "资金管理（6）http://demo.abc.com/APP/app_fundManage.aspx 备注：yyy";
         ArrayList<String> regex=new ArrayList<String>();
 //        regex.add("");
         regex.add("http://[a-zA-Z0-9_/.]+.aspx");
         String formatOut="public static String URL_=\"%s\"";
 //        String formatOut="public static String URL_%s=\"%s\"";
-        String result= dealLine(orignLine,"http://",regex,formatOut);
+        String result= dealLines(orignLine,"http://",regex,formatOut);
         System.out.println(result);
     }
 
@@ -151,11 +171,8 @@ public class UtilStringFactory {
 
         String formatOut="<item name=\"%s\">%s</item>";
 
-        List<String> results= dealLines(contents,"=",regex,formatOut);
+        String results= dealLines(contents,"=",regex,formatOut);
 
-        System.out.println("结果");
-        for (String temp:results){
-            System.out.println(temp);
-        }
+        System.out.println("结果"+results);
     }
 }
