@@ -105,43 +105,27 @@ public class UtilStringFactory {
     /**逐行分析文件，按正则获取格式化特征值
      * @param regexes position 0:特征行正则  position 1：特征内容
      * */
-    public static String extractFeatureFromFile(String pathName,String lineFeature,ArrayList<String> regexes){
-
+    public static String dealFile(String pathName,String lineFeature,ArrayList<String> regexes, String formatOut){
         File file = new File(pathName);
-        BufferedReader reader = null;
-        int lengthHasRead=0;
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String tempString = null;
-            int line = 1;
-            // 一次读入一行，直到读入null为文件结束
-            while ((tempString = reader.readLine()) != null) {
-                String temp= dealLine(tempString,lineFeature,regexes,"%s");
-                if (temp!=null){
-                    // 显示行号
-//                    logger.info("在line " + line + "提取出特征结果:" + temp+" 于"+pathName);
-                    return temp;
-                }
-                lengthHasRead+=tempString.length();
-                line++;
-            }
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e1) {
-                }
-            }
-        }
-        return null;
+        String fileContent= UtilFile.read_UTF8_FileContent(file);
+        String result=dealLines(fileContent,lineFeature,regexes,formatOut);
+        return result;
     }
 
     public static void main(String[] args){
-        testUrlExtract();
+//        testUrlExtract();
 //        testAttrToStyle();
+
+        testDealFile();
+    }
+
+    private static void testDealFile() {
+        ArrayList<String> regex=new ArrayList<String>();
+//        regex.add("");
+        regex.add("http://[a-zA-Z0-9_/.]+.aspx");
+        String formatOut="public static String URL_=\"%s\"";
+        String result= dealFile("test.txt","http://",regex,formatOut);
+        System.out.println(result);
     }
 
     private static void testUrlExtract() {
