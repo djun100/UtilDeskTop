@@ -27,7 +27,7 @@ public class UtilStringFactory {
      *
      * <pre>todo 给出示例关键信息，反推正则表达式，列出相似性匹配结果
      * @return*/
-    public static String processFactory(String originLine,String lineFeature, List<String>regexExtract, String formatOut){
+    private static String dealLine(String originLine, String lineFeature, List<String>regexExtract, String formatOut){
         // TODO: 2016/5/8 按正则提取有用信息
         // TODO: 2016/5/8 判断该行是否为匹配行，是→继续
         ArrayList<String> keys=new ArrayList<>();
@@ -62,6 +62,27 @@ public class UtilStringFactory {
         return result;
     }
 
+    /**处理多行数据
+     * @param contentLines
+     * @param lineFeature
+     * @param regexExtract
+     * @param formatOut
+     * @return
+     */
+    public static List<String> dealLines(String contentLines, String lineFeature, List<String> regexExtract, String formatOut){
+        ArrayList<String> results=new ArrayList<>();
+        String[] ss = contentLines.split("\n");
+
+        for (int i = 0; i < ss.length; i++) {
+            System.out.println("当前处理行："+ss[i]);
+            String temp= dealLine(ss[i],lineFeature,regexExtract,formatOut);
+            if (!UtilString.isEmpty(temp)) {
+                results.add(temp);
+            }
+        }
+        return results;
+    }
+
     /**逐行分析文件，按正则获取格式化特征值
      * @param regexes position 0:特征行正则  position 1：特征内容
      * */
@@ -76,21 +97,16 @@ public class UtilStringFactory {
             int line = 1;
             // 一次读入一行，直到读入null为文件结束
             while ((tempString = reader.readLine()) != null) {
-
-                String temp=processFactory(tempString,lineFeature,regexes,"%s");
+                String temp= dealLine(tempString,lineFeature,regexes,"%s");
                 if (temp!=null){
                     // 显示行号
 //                    logger.info("在line " + line + "提取出特征结果:" + temp+" 于"+pathName);
                     return temp;
                 }
-
                 lengthHasRead+=tempString.length();
-
-
                 line++;
             }
             reader.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -105,35 +121,23 @@ public class UtilStringFactory {
     }
 
     public static void main(String[] args){
-        urlExtract();
-//        testAttrToStyle();
+//        testUrlExtract();
+        testAttrToStyle();
     }
 
-    private static void urlExtract() {
+    private static void testUrlExtract() {
         String orignLine="资金账户管理（6）http://demo.abc.com/APP/app_fundAccountManage.aspx 备注：xxxx";
         ArrayList<String> regex=new ArrayList<String>();
 //        regex.add("");
         regex.add("http://[a-zA-Z0-9_/.]+.aspx");
         String formatOut="public static String URL_=\"%s\"";
 //        String formatOut="public static String URL_%s=\"%s\"";
-        String result=processFactory(orignLine,"http://",regex,formatOut);
+        String result= dealLine(orignLine,"http://",regex,formatOut);
         System.out.println(result);
-    }
-
-    public static String testAttrLineToItem(String orignLine){
-
-//        orignLine="android:id=\"@+id/newMemor_StartTime\"" ;
-        ArrayList<String> regex=new ArrayList<String>();
-        regex.add("[a-zA-Z_0-9:]+");//
-        regex.add("=\"(.*)\"");
-        String formatOut="<item name=\"%s\">%s</item>";
-        String result=processFactory(orignLine,"=",regex,formatOut);
-        System.out.println(result);
-        return result;
     }
 
     public static void testAttrToStyle(){
-        String attr="                <TextView\n" +
+        String contents="                <TextView\n" +
                 "                    android:id=\"@+id/newMemor_StartTime\"\n" +
                 "                    style=\"@style/NewMemorActivity_tv_value\"\n" +
                 "                    android:layout_marginLeft=\"10dp\"\n" +
@@ -141,16 +145,13 @@ public class UtilStringFactory {
                 "\n" +
                 "                     />";
 
-        ArrayList<String> results=new ArrayList<>();
-        String[] ss = attr.split("\n");
+        ArrayList<String> regex=new ArrayList<String>();
+        regex.add("[a-zA-Z_0-9:]+");//
+        regex.add("=\"(.*)\"");
 
-        for (int i = 0; i < ss.length; i++) {
-            System.out.println("当前处理行："+ss[i]);
-            String temp=testAttrLineToItem(ss[i]);
-            if (!UtilString.isEmpty(temp)) {
-                results.add(temp);
-            }
-        }
+        String formatOut="<item name=\"%s\">%s</item>";
+
+        List<String> results= dealLines(contents,"=",regex,formatOut);
 
         System.out.println("结果");
         for (String temp:results){
