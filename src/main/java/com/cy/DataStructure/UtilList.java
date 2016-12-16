@@ -1,5 +1,9 @@
 package com.cy.DataStructure;
 
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinFormat;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -103,8 +107,8 @@ public class UtilList {
                     Object obj2 = m2.invoke(((E) arg2), new  Object[]{});
                     if (obj1!=null&&obj2!=null) {
                         if (obj1 instanceof String) {
-                            obj1= UtilHanziToPinyin.getPinYin((String) obj1);
-                            obj2= UtilHanziToPinyin.getPinYin((String) obj2);
+                            obj1= PinyinHelper.convertToPinyinString((String) obj1,"", PinyinFormat.WITHOUT_TONE);
+                            obj2= PinyinHelper.convertToPinyinString((String) obj2,"", PinyinFormat.WITHOUT_TONE);
                             // 字符串
                             result = obj1.toString().compareTo(obj2.toString());
                             //                        Log.w("obj1:"+obj1+" obj2:"+obj2+" result:"+result);
@@ -147,10 +151,12 @@ public class UtilList {
                     iae.printStackTrace();
                 } catch (InvocationTargetException ite) {
                     ite.printStackTrace();
+                } catch (PinyinException e) {
+                    e.printStackTrace();
                 }
 
                 return result;
             }
         });
     }
-}  
+}

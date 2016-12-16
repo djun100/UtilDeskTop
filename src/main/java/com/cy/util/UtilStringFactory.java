@@ -2,11 +2,12 @@ package com.cy.util;
 
 
 import com.cy.DataStructure.UtilString;
+import com.github.stuxuhai.jpinyin.PinyinException;
+import com.github.stuxuhai.jpinyin.PinyinFormat;
+import com.github.stuxuhai.jpinyin.PinyinHelper;
+import org.joor.Reflect;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -28,23 +29,45 @@ public class UtilStringFactory {
      * <pre>todo 给出示例关键信息，反推正则表达式，列出相似性匹配结果
      * @return*/
     private static String dealLine(String originLine, String lineFeature, List<String>regexExtract, String formatOut){
-        // TODO: 2016/5/8 按正则提取有用信息
-        // TODO: 2016/5/8 判断该行是否为匹配行，是→继续
+        List<BeanRegex> beanRegexes=new ArrayList<>();
+        for (String regex:regexExtract){
+            BeanRegex beanRegex=new BeanRegex(regex);
+            beanRegexes.add(beanRegex);
+        }
+        return dealLineComplex(originLine,lineFeature,beanRegexes,formatOut);
+    }
+
+    /**按正则格式提取原文中的有用信息并按正则格式返回
+     * @param originLine 当前分析行内容
+     * @param lineFeature  特征行正则
+     * @param regexExtract 与输出%s数量对应的若干特征内容正则
+     * @param formatOut 特征内容格式化输出
+     *                  按照关键信息提取顺序，将提取的行信息按格式化输出
+     *                  eg:public static String URL_%s="%s";
+     *
+     * <pre>todo 给出示例关键信息，反推正则表达式，列出相似性匹配结果
+     * @return*/
+    private static String dealLineComplex(String originLine, String lineFeature, List<BeanRegex> regexExtract, String formatOut){
+
         ArrayList<String> keys=new ArrayList<>();
         Matcher m = Pattern.compile(lineFeature).matcher(originLine); // 获取 matcher 对象
         if (m.find()){//该行是关键行
             for (int i = 0; i < regexExtract.size(); i++) {
                 boolean isContainsGroup=false;
-                if (regexExtract.get(i).contains("(")){
+                if (regexExtract.get(i).regex.contains("(")){
                     isContainsGroup=true;//该正则需要在匹配出的内容中提取出有用信息
                 }
-                m=Pattern.compile(regexExtract.get(i)).matcher(originLine);
+                m=Pattern.compile(regexExtract.get(i).regex).matcher(originLine);
                 String keyInfo;
                 if (m.find()){
                     if (isContainsGroup){
                         keyInfo=m.group(1);//在匹配出的内容中提取出有用信息
                     }else {
                         keyInfo=m.group();
+                    }
+                    //若提供反射处理函数，则处理关键信息
+                    if (!UtilString.isEmpty(regexExtract.get(i).clazz)&&!UtilString.isEmpty(regexExtract.get(i).method)) {
+                        keyInfo= Reflect.on(regexExtract.get(i).clazz).call(regexExtract.get(i).method,keyInfo).get();
                     }
 //                    logger.info("关键信息："+keyInfo);
                     keys.add(keyInfo);
@@ -88,9 +111,49 @@ public class UtilStringFactory {
      * @param formatOut
      * @return
      */
+    public static List<String> dealLinesListComplex(String contentLines, String lineFeature, List<BeanRegex> regexExtract, String formatOut){
+        ArrayList<String> results=new ArrayList<>();
+        String[] ss = contentLines.split("\n");
+
+        for (int i = 0; i < ss.length; i++) {
+            System.out.println("当前处理行："+ss[i]);
+            String temp= dealLineComplex(ss[i],lineFeature,regexExtract,formatOut);
+            if (!UtilString.isEmpty(temp)) {
+                results.add(temp);
+            }
+        }
+        return results;
+    }
+
+    /**处理多行数据
+     * @param contentLines
+     * @param lineFeature
+     * @param regexExtract
+     * @param formatOut
+     * @return
+     */
     public static String dealLines(String contentLines, String lineFeature, List<String> regexExtract, String formatOut){
         StringBuilder sb=new StringBuilder();
         List<String> results=dealLinesList(contentLines,lineFeature,regexExtract,formatOut);
+        int size=results.size();
+        if (size==0) return "";
+
+        for (int i = 0; i < size; i++) {
+            sb.append(results.get(i)).append(i==size-1?"":"\n");
+        }
+        return sb.toString();
+    }
+
+    /**处理多行数据
+     * @param contentLines
+     * @param lineFeature
+     * @param regexExtract
+     * @param formatOut
+     * @return
+     */
+    public static String dealLinesComplex(String contentLines, String lineFeature, List<BeanRegex> regexExtract, String formatOut){
+        StringBuilder sb=new StringBuilder();
+        List<String> results=dealLinesListComplex(contentLines,lineFeature,regexExtract,formatOut);
         int size=results.size();
         if (size==0) return "";
 
@@ -110,11 +173,21 @@ public class UtilStringFactory {
         return result;
     }
 
+    /**逐行分析文件，按正则获取格式化特征值
+     * @param regexes position 0:特征行正则  position 1：特征内容
+     * */
+    public static String dealFileComplex(String pathName,String lineFeature,ArrayList<BeanRegex> regexes, String formatOut){
+        File file = new File(pathName);
+        String fileContent= UtilFile.read_UTF8_FileContent(file);
+        String result=dealLinesComplex(fileContent,lineFeature,regexes,formatOut);
+        return result;
+    }
+
     public static void main(String[] args){
-//        testUrlExtract();
+        testUrlExtract();
 //        testAttrToStyle();
 
-        testDealFile();
+//        testDealFile();
     }
 
     private static void testDealFile() {
@@ -129,12 +202,17 @@ public class UtilStringFactory {
     private static void testUrlExtract() {
         String orignLine="资金账户管理（5）http://demo.abc.com/APP/app_fundAccountManage.aspx 备注：xxxx\n" +
                 "资金管理（6）http://demo.abc.com/APP/app_fundManage.aspx 备注：yyy";
-        ArrayList<String> regex=new ArrayList<String>();
-//        regex.add("");
-        regex.add("http://[a-zA-Z0-9_/.]+.aspx");
-        String formatOut="public static String URL_=\"%s\"";
-//        String formatOut="public static String URL_%s=\"%s\"";
-        String result= dealLines(orignLine,"http://",regex,formatOut);
+
+        ArrayList<BeanRegex> beanRegexes =new ArrayList<BeanRegex>();
+        BeanRegex beanRegex1=new BeanRegex("[\\u4e00-\\u9fa5]+");
+        beanRegex1.clazz="com.cy.util.UtilStringFactory";
+        beanRegex1.method="hanziTopinyin";
+        beanRegexes.add(beanRegex1);
+        BeanRegex beanRegex2=new BeanRegex("http://[a-zA-Z0-9_/.]+.aspx");
+        beanRegexes.add(beanRegex2);
+
+        String formatOut="public static String URL_%s=\"%s\"";
+        String result= dealLinesComplex(orignLine,"http://",beanRegexes,formatOut);
         System.out.println(result);
     }
 
@@ -156,5 +234,14 @@ public class UtilStringFactory {
         String results= dealLines(contents,"=",regex,formatOut);
 
         System.out.println("结果"+results);
+    }
+
+    private static String hanziTopinyin(String tobeConvert){
+        try {
+            return PinyinHelper.convertToPinyinString(tobeConvert,"", PinyinFormat.WITHOUT_TONE);
+        } catch (PinyinException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
