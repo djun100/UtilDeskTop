@@ -31,27 +31,25 @@ public class UtilStringFactory {
         // TODO: 2016/5/8 按正则提取有用信息
         // TODO: 2016/5/8 判断该行是否为匹配行，是→继续
         ArrayList<String> keys=new ArrayList<>();
-        Pattern p = Pattern.compile(lineFeature);
-        Matcher m = p.matcher(originLine); // 获取 matcher 对象
-        if (m.find()){
+        Matcher m = Pattern.compile(lineFeature).matcher(originLine); // 获取 matcher 对象
+        if (m.find()){//该行是关键行
             for (int i = 0; i < regexExtract.size(); i++) {
                 boolean isContainsGroup=false;
                 if (regexExtract.get(i).contains("(")){
-                    isContainsGroup=true;
+                    isContainsGroup=true;//该正则需要在匹配出的内容中提取出有用信息
                 }
-                p=Pattern.compile(regexExtract.get(i));
-                m=p.matcher(originLine);
+                m=Pattern.compile(regexExtract.get(i)).matcher(originLine);
                 String keyInfo;
                 if (m.find()){
                     if (isContainsGroup){
-                        keyInfo=m.group(1);
+                        keyInfo=m.group(1);//在匹配出的内容中提取出有用信息
                     }else {
                         keyInfo=m.group();
                     }
 //                    logger.info("关键信息："+keyInfo);
                     keys.add(keyInfo);
                 }else {
-                    throw new RuntimeException("未在关键行匹配到关键信息");
+                    throw new RuntimeException("正则有误：匹配出该行为关键行，但未在该行匹配到关键信息");
                 }
             }
         }else {
