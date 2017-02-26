@@ -1,4 +1,4 @@
-package DataStructure;
+package com.cy.DataStructure;
 
 import java.util.ArrayList;
 
@@ -222,4 +222,9 @@ public class UtilString {
 				return def;
 			}
 		}
+	public static String nullDeal(String origin){
+		if (origin==null){
+			return "";
+		}else return origin;
+	}
 }
