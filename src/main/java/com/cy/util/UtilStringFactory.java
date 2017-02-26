@@ -72,7 +72,9 @@ public class UtilStringFactory {
 //                    logger.info("关键信息："+keyInfo);
                     keys.add(keyInfo);
                 }else {
-                    throw new RuntimeException("正则有误：匹配出该行为关键行，但未在该行匹配到关键信息");
+                    System.out.println("跳过一个关键行，因未在该行匹配到关键信息:"+originLine);
+                    continue;
+//                    throw new RuntimeException("正则有误：匹配出该行为关键行，但未在该行匹配到关键信息");
                 }
             }
         }else {
@@ -184,10 +186,11 @@ public class UtilStringFactory {
     }
 
     public static void main(String[] args){
-        testUrlExtract();
+//        testUrlExtract();
 //        testAttrToStyle();
 
 //        testDealFile();
+        testExtractPkgName();
     }
 
     private static void testDealFile() {
@@ -196,6 +199,15 @@ public class UtilStringFactory {
         regex.add("http://[a-zA-Z0-9_/.]+.aspx");
         String formatOut="public static String URL_=\"%s\"";
         String result= dealFile("test.txt","http://",regex,formatOut);
+        System.out.println(result);
+    }
+
+    private static void testExtractPkgName() {
+        ArrayList<String> regex=new ArrayList<String>();
+//        regex.add("");
+        regex.add("package=\"([0-9a-zA-Z.]+)\"");
+        String formatOut="%s";
+        String result= dealFile("AndroidManifest.xml","package",regex,formatOut);
         System.out.println(result);
     }
 
