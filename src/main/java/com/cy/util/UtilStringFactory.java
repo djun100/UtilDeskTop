@@ -73,7 +73,7 @@ public class UtilStringFactory {
                     keys.add(keyInfo);
                 }else {
                     System.out.println("跳过一个关键行，因未在该行匹配到关键信息:"+originLine);
-                    continue;
+                    return null;
 //                    throw new RuntimeException("正则有误：匹配出该行为关键行，但未在该行匹配到关键信息");
                 }
             }
