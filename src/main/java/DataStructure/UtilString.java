@@ -19,7 +19,38 @@ public class UtilString {
 	public static boolean isEmpty(String str) {
 		return str == null || str.length() == 0;
 	}
-	
+
+	public static boolean notEmpty(String str) {
+		return !isEmpty(str);
+	}
+
+	public static int countSon(String father,String son){
+//		father = "ajavabbbjavajjavajave";
+//		son = "java";
+//      father = "aaaa";
+//      son = "aa";
+		int count = 0;
+		//一共有father的长度的循环次数
+		for(int i=0; i<father.length() ; ){
+			int c = -1;
+			c = father.indexOf(son);
+			//如果有S这样的子串。则C的值不是-1.
+			if(c != -1){
+				//这里的c+1 而不是 c+ son.length();这是因为。如果father的字符串是“aaaa”， son = “aa”，则结果是2个。但是实际上是3个子字符串
+				//将剩下的字符冲洗取出放到str中
+				father = father.substring(c + 1);
+				count ++;
+				System.out.println(father);
+			}
+			else {
+				//i++;
+//				System.out.println("没有");
+				break;
+			}
+		}
+		return count;
+	}
+
 		/** 将中文转换成unicode编码 */
 		public static String gbEncoding(final String gbString) {
 			char[] utfBytes = gbString.toCharArray();
