@@ -1,4 +1,4 @@
-package com.cy.DataStructure;
+package com.cy.data;
 
 public class BeanTest{
         private String  field1;

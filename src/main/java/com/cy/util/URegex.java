@@ -5,7 +5,7 @@ import ru.lanwen.verbalregex.VerbalExpression;
 /**
  * Created by cy on 2016/3/21.
  */
-public class UtilRegex {
+public class URegex {
     public static boolean isMatchDeclare(String content){
         String declare="private Button  mBtn_Login_;";
         VerbalExpression testRegex=VerbalExpression.regex()

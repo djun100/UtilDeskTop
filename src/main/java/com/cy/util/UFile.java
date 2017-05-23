@@ -1,6 +1,6 @@
 package com.cy.util;
 
-import com.cy.DataStructure.UtilString;
+import com.cy.data.UString;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 /**
  * @author djun100
  */
-public class UtilFile {
+public class UFile {
 
 
     public static String read_UTF8_FileContent(File file) {
@@ -325,7 +325,7 @@ public class UtilFile {
     }
 
     public static String getUrlExtension(String url) {
-        if (!UtilString.isEmpty(url)) {
+        if (!UString.isEmpty(url)) {
             int i = url.lastIndexOf('.');
             if (i > 0 && i < url.length() - 1) {
                 return url.substring(i + 1).toLowerCase();
@@ -345,7 +345,7 @@ public class UtilFile {
     }
     /**@param format %.20f 小数点后20位*/
     public static String showFileSize(long size,String format) {
-        if (UtilString.isEmpty(format)) format="%.1f";
+        if (UString.isEmpty(format)) format="%.1f";
         final double KB = 1024.0;
         final double MB = KB * KB;
         final double GB = KB * KB * KB;

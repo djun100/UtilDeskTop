@@ -9,7 +9,7 @@ import java.util.Enumeration;
 /**
  * Created by cy on 2016/1/26.
  */
-public class UtilsUI {
+public class UUI {
     public static void setDefaultFont(JComponent component){
         component.setFont(new Font("微软雅黑",Font.PLAIN,30));
     }

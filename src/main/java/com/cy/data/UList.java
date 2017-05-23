@@ -1,4 +1,4 @@
-package com.cy.DataStructure;
+package com.cy.data;
 
 import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class UtilList {
+public class UList {
 
     public static <E> boolean notEmpty(List<E> list) {
         return list != null && list.size() > 0;

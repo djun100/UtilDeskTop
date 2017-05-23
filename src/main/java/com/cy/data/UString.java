@@ -1,9 +1,9 @@
-package com.cy.DataStructure;
+package com.cy.data;
 
 import java.util.ArrayList;
 
 
-public class UtilString {
+public class UString {
 	public static String join(final ArrayList<String> array, String separator) {
 		StringBuffer result = new StringBuffer();
 		if (array != null && array.size() > 0) {
@@ -105,7 +105,7 @@ public class UtilString {
 		 * @return
 		 */
 		public static boolean toBoolean(String str, boolean def) {
-			if (UtilString.isEmpty(str))
+			if (UString.isEmpty(str))
 				return def;
 			if ("false".equalsIgnoreCase(str) || "0".equals(str))
 				return false;
@@ -133,7 +133,7 @@ public class UtilString {
 		 * @return
 		 */
 		public static float toFloat(String str, float def) {
-			if (UtilString.isEmpty(str))
+			if (UString.isEmpty(str))
 				return def;
 			try {
 				return Float.parseFloat(str);
@@ -160,7 +160,7 @@ public class UtilString {
 		 * @return
 		 */
 		public static long toLong(String str, long def) {
-			if (UtilString.isEmpty(str))
+			if (UString.isEmpty(str))
 				return def;
 			try {
 				return Long.parseLong(str);
@@ -187,7 +187,7 @@ public class UtilString {
 		 * @return
 		 */
 		public static short toShort(String str, short def) {
-			if (UtilString.isEmpty(str))
+			if (UString.isEmpty(str))
 				return def;
 			try {
 				return Short.parseShort(str);
@@ -214,7 +214,7 @@ public class UtilString {
 		 * @return
 		 */
 		public static int toInt(String str, int def) {
-			if (UtilString.isEmpty(str))
+			if (UString.isEmpty(str))
 				return def;
 			try {
 				return Integer.parseInt(str);

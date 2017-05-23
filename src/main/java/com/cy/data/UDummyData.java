@@ -1,4 +1,4 @@
-package com.cy.DataStructure;
+package com.cy.data;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -9,7 +9,7 @@ import java.util.Random;
  * Created by <a href="https://github.com/djun100">cy</a> on 2016/5/21.
  */
 
-public class UtilDummyData {
+public class UDummyData {
 
     /**
      * @param min
