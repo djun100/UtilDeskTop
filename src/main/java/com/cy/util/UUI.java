@@ -10,6 +10,17 @@ import java.util.Enumeration;
  * Created by cy on 2016/1/26.
  */
 public class UUI {
+
+    public static FontUIResource preferFont(){
+        Dimension curr=getScreenSize();
+        FontUIResource fontUIResource = null;
+        if (curr.getWidth()==1920){
+            fontUIResource=new FontUIResource("微软雅黑", Font.PLAIN,17);
+        }else
+            fontUIResource=new FontUIResource("微软雅黑", Font.PLAIN,32);
+        return fontUIResource;
+    }
+
     public static void setDefaultFont(JComponent component){
         component.setFont(new Font("微软雅黑",Font.PLAIN,30));
     }
