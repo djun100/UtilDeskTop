@@ -2,9 +2,6 @@ package com.cy.util;
 
 
 import com.cy.data.UString;
-import com.github.stuxuhai.jpinyin.PinyinException;
-import com.github.stuxuhai.jpinyin.PinyinFormat;
-import com.github.stuxuhai.jpinyin.PinyinHelper;
 import org.joor.Reflect;
 import ru.lanwen.verbalregex.VerbalExpression;
 
@@ -176,7 +173,7 @@ public class URegex {
      * */
     public static String dealFile(String pathName,String lineFeature,ArrayList<String> regexes, String formatOut){
         File file = new File(pathName);
-        String fileContent= UFile.read_UTF8_FileContent(file);
+        String fileContent= UFile.read_UTF8(file);
         String result=dealLines(fileContent,lineFeature,regexes,formatOut);
         return result;
     }
@@ -186,7 +183,7 @@ public class URegex {
      * */
     public static String dealFileComplex(String pathName,String lineFeature,ArrayList<BeanRegex> regexes, String formatOut){
         File file = new File(pathName);
-        String fileContent= UFile.read_UTF8_FileContent(file);
+        String fileContent= UFile.read_UTF8(file);
         String result=dealLinesComplex(fileContent,lineFeature,regexes,formatOut);
         return result;
     }

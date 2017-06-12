@@ -11,46 +11,42 @@ import java.nio.channels.FileChannel;
  */
 public class UFile {
 
-
-    public static String read_UTF8_FileContent(File file) {
-        String str = null;
-        try {
-            InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
-            StringBuffer sbread = new StringBuffer();
-            while (isr.ready()) {
-                sbread.append((char) isr.read());
-            }
-            isr.close();
-            // 从构造器中生成字符串，并替换搜索文本
-            str = sbread.toString();
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return str;
+    public static String read_UTF8(File file) {
+        return read(file,"UTF-8");
     }
 
-    public static void write_UTF8_FileContent(File file, String content) {
+    public static String read(File file,String charset){
+    String str = null;
+    try {
+        InputStreamReader isr = new InputStreamReader(new FileInputStream(file), "UTF-8");
+        StringBuffer sbread = new StringBuffer();
+        while (isr.ready()) {
+            sbread.append((char) isr.read());
+        }
+        isr.close();
+        // 从构造器中生成字符串，并替换搜索文本
+        str = sbread.toString();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return str;
+}
+
+
+    public static boolean write_UTF8(File file, String content) {
+        return write(file,content,"UTF-8");
+    }
+
+    public static boolean write(File file,String content,String charset){
         try {
-            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file), charset);
             out.write(content.toCharArray());
             out.flush();
             out.close();
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            return false;
         }
     }
 
