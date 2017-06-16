@@ -14,7 +14,7 @@ public class UUI {
     public static FontUIResource preferFont(){
         Dimension curr=getScreenSize();
         FontUIResource fontUIResource = null;
-        if (curr.getWidth()==1920){
+        if (curr.getWidth() <= 1920){
             fontUIResource=new FontUIResource("微软雅黑", Font.PLAIN,17);
         }else
             fontUIResource=new FontUIResource("微软雅黑", Font.PLAIN,32);

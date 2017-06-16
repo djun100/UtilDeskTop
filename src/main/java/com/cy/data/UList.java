@@ -159,4 +159,11 @@ public class UList {
             }
         });
     }
+
+    public  static <E> void print(List<E> list){
+        if (isEmpty(list)) return;
+        for (E e:list){
+            System.out.println(e.toString());
+        }
+    }
 }

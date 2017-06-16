@@ -5,11 +5,23 @@ import com.cy.data.UString;
 import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 /**
  * @author djun100
  */
 public class UFile {
+
+    public static void main(String[] args) {
+        //test 遍历文件夹
+        String path="/Users/cy/cy";
+        ArrayList<File> files=getFiles(new File(path),"");
+        for (File f:files){
+            System.out.println(f.getAbsolutePath());
+        }
+    }
 
     public static String read_UTF8(File file) {
         return read(file,"UTF-8");
@@ -262,21 +274,42 @@ public class UFile {
         return file.getName();
     }
 
-    /**
-     * 判断文件的编码格式
-     *
-     * @param fileName :file
-     * @return 文件编码格式
-     * @throws Exception
-     */
-    public static String getFileCode(String fileName) throws Exception {
-        BufferedInputStream bin = new BufferedInputStream(new FileInputStream(fileName));
-        int p = (bin.read() << 8) + bin.read();
-        String code = null;
+    public static final String ENCODER_UTF_8="UTF-8";
+    public static final String ENCODER_UTF_8_NO_BOM="UTF-8-NO-BOM";
+    public static final String ENCODER_UTF_8_BOM="UTF-8-BOM";
+    public static final String ENCODER_GBK="GBK";
+    public static final String ENCODER_UNICODE="Unicode";
+    public static final String ENCODER_UNF_16BE="UTF-16BE";
 
-        switch (p) {
+    /**
+     * @Comments ：获取文件编码格式
+     * @param fileName
+     * @return
+     */
+    private static String getCharset(File fileName) {
+        String code = null;
+        BufferedInputStream bin;
+        int bom = 0;
+        String str = " ";
+        String str2 = "";
+        try {
+            bin = new BufferedInputStream(new FileInputStream(fileName));
+            bom = (bin.read() << 8) + bin.read();
+
+            // 获取两个字节内容，如果文件无BOM信息，则通过判断字的字节长度区分编码格式
+            byte bs[] = new byte[10];
+            while(str.matches("\\s+\\w*")){
+                bin.read(bs);
+                str = new String(bs, "UTF-8");
+            }
+            str2 = new String(bs, "GBK");
+        } catch (Exception e) {
+        }
+
+        // 有BOM
+        switch (bom) {
             case 0xefbb:
-                code = "UTF-8";
+                code = ENCODER_UTF_8_BOM;
                 break;
             case 0xfffe:
                 code = "Unicode";
@@ -284,11 +317,17 @@ public class UFile {
             case 0xfeff:
                 code = "UTF-16BE";
                 break;
+            case 0x5c75:
+                code = "ANSI|ASCII" ;
+                break ;
             default:
-                code = "GBK";
+                // 无BOM
+                if (str.length() <=str2.length()) {
+                    code = ENCODER_UTF_8_NO_BOM;
+                } else {
+                    code = "GBK";
+                }
         }
-
-        bin.close();
 
 
         return code;
@@ -570,5 +609,46 @@ public class UFile {
         }
         //return size/1048576;
         return size;
+    }
+
+    /**非递归遍历文件夹，有的用linkedlist，在此用stack，由二叉树非递归遍历衍生而来
+     * @param file  文件夹
+     * @param suffix    后缀名
+     */
+    public static ArrayList<File> getFiles(File file,String suffix){
+        if (UString.notEmpty(suffix)) {
+            if (!suffix.startsWith(".")){
+                suffix="."+suffix;
+            }
+        }
+        ArrayList<File> filesRlt=new ArrayList<>();
+        Stack<File> stack=new Stack<>();
+        stack.push(file);
+        File curr;
+        while (stack.size()>0){
+            curr=stack.pop();
+            if (curr.isFile()){
+                if (curr.getName().endsWith(suffix)){
+                    filesRlt.add(curr);
+//                    System.out.println(curr.getAbsolutePath());
+                }
+            }else {
+                File[] files=curr.listFiles();
+                if (files!=null){
+                    for (int i = 0; i < files.length; i++) {
+                        if (files[i].isFile()){
+                            if (files[i].getName().endsWith(suffix)){
+                                filesRlt.add(files[i]);
+//                                System.out.println(files[i].getAbsolutePath());
+                            }
+                        }else {
+                            stack.push(files[i]);
+                        }
+                    }
+                }
+            }
+
+        }
+        return filesRlt;
     }
 }
