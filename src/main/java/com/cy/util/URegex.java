@@ -100,7 +100,6 @@ public class URegex {
         String[] ss = contentLines.split("\n");
 
         for (int i = 0; i < ss.length; i++) {
-            System.out.println("当前处理行："+ss[i]);
             String temp= dealLine(ss[i],lineFeature,regexExtract,formatOut);
             if (!UString.isEmpty(temp)) {
                 results.add(temp);
@@ -121,7 +120,6 @@ public class URegex {
         String[] ss = contentLines.split("\n");
 
         for (int i = 0; i < ss.length; i++) {
-            System.out.println("当前处理行："+ss[i]);
             String temp= dealLineComplex(ss[i],lineFeature,regexExtract,formatOut);
             if (!UString.isEmpty(temp)) {
                 results.add(temp);
