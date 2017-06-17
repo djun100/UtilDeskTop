@@ -75,9 +75,8 @@ public class URegex {
 //                    logger.info("关键信息："+keyInfo);
                     keys.add(keyInfo);
                 }else {
-                    System.out.println("跳过一个关键行，因未在该行匹配到关键信息:"+originLine);
+//                    System.out.println("跳过一个关键行，因未在该行匹配到关键信息:"+originLine);
                     return null;
-//                    throw new RuntimeException("正则有误：匹配出该行为关键行，但未在该行匹配到关键信息");
                 }
             }
         }else {
