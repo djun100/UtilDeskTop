@@ -62,7 +62,7 @@ public class URegex {
                     if (isContainsGroup){
                         keyInfo=m.group(1);//在匹配出的内容中提取出有用信息
                     }else {
-                        keyInfo=m.group();
+                        keyInfo=m.group(0);
                     }
                     //若提供反射处理函数，则处理关键信息
                     if (!UString.isEmpty(regexExtract.get(i).clazz)
@@ -185,21 +185,16 @@ public class URegex {
         return result;
     }
 
-    public static void main(String[] args){
-//        testUrlExtract();
-//        testAttrToStyle();
 
-//        testDealFile();
-        testExtractPkgName();
-    }
 
     private static void testDealFile() {
         ArrayList<String> regex=new ArrayList<String>();
 //        regex.add("");
-        regex.add("http://[a-zA-Z0-9_/.]+.aspx");
+        regex.add("\\s*[\\u4e00-\\u9fa5\\w]*\\s*\\n\\s*http://[a-zA-Z0-9_/.]+.aspx\\s*");
         String formatOut="public static String URL_=\"%s\"";
-        String result= dealFile("test.txt","http://",regex,formatOut);
+        String result= dealFile("test.txt","\\s*[\\u4e00-\\u9fa5\\w]*\\s*",regex,formatOut);
         System.out.println(result);
+
     }
 
     private static void testExtractPkgName() {
@@ -217,13 +212,13 @@ public class URegex {
 
         ArrayList<BeanRegex> beanRegexes =new ArrayList<BeanRegex>();
         BeanRegex beanRegex1=new BeanRegex("[\\u4e00-\\u9fa5]+");
-        beanRegex1.clazz="com.cy.util.URegex";
+        beanRegex1.clazz="com.cy.data.UString";
         beanRegex1.method="hanziTopinyin";
         beanRegexes.add(beanRegex1);
         BeanRegex beanRegex2=new BeanRegex("http://[a-zA-Z0-9_/.]+.aspx");
         beanRegexes.add(beanRegex2);
 
-        String formatOut="public static String URL_%s=\"%s\"";
+        String formatOut="public static String URL_%s=\n\"%s\"";
         String result= dealLinesComplex(orignLine,"http://",beanRegexes,formatOut);
         System.out.println(result);
     }
@@ -280,5 +275,37 @@ public class URegex {
                 .build();
 
         return testRegex.testExact(content);
+    }
+
+    public static void testMultiLine(){
+        String multiLine="abc\n" +
+                "d\n" +
+                "e\n" +
+                "fg";
+        String content="a\n" +
+                "http://demo.abc.com/APP/app_fundAccountManage.aspx\n" +
+                "//\n" +
+                "b\n" +
+                "http://demo.abc.com/APP/app_fundManage.aspx\n";
+
+        Matcher matcher=Pattern.compile("\\w+\\n\\w+").matcher(multiLine);
+//        Matcher matcher=Pattern.compile("\\w*\\nhttp://[a-zA-Z0-9_/.]+.aspx").matcher(content);
+
+        while (matcher.find()){
+            System.out.println(matcher.group()+"\n");
+        }
+
+//        System.out.println(matcher.matches());
+//        System.out.println(matcher.group());
+
+    }
+
+
+    public static void main(String[] args){
+//        testUrlExtract();
+//        testAttrToStyle();
+            testMultiLine();
+//        testDealFile();
+//        testExtractPkgName();
     }
 }

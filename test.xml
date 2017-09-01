@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp10">
+
+        <EditText
+            android:id="@+id/upload_tgou_product_merchant_code_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:singleLine="true"
+            android:maxLength="8"
+            android:inputType="number"
+            android:hint="请输入开票码或商品条码（必填）"
+            android:paddingLeft="@dimen/dp10"
+            android:textSize="@dimen/sp16" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/group_shipping"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/btn_free_shipping"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="@dimen/dp10"
+                android:layout_marginRight="@dimen/dp10"
+                android:background="@drawable/radio_btn"
+                android:button="@null"
+                android:gravity="center"
+                android:text="包邮"
+                android:textColor="@color/color_radio_btn"
+                android:textSize="@dimen/sp16" />
+
+            <RadioButton
+                android:id="@+id/btn_not_free_shipping"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@drawable/radio_btn"
+                android:button="@null"
+                android:checked="true"
+                android:gravity="center"
+                android:text="不包邮"
+                android:textColor="@color/color_radio_btn"
+                android:textSize="@dimen/sp16" />
+        </RadioGroup>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,3 +1,9 @@
-﻿资金账户管理（5）http://demo.abc.com/APP/app_fundAccountManage.aspx 备注：xxxx
-//
- 资金管理（6）http://demo.abc.com/APP/app_fundManage.aspx 备注：yyy
+﻿
+资金账户管理
+http://demo.abc.com/APP/app_fundAccountManage.aspx 备注：呵呵哒
+
+//无聊
+ 资金管理
+ http://demo.abc.com/APP/app_fundManage.aspx   attention：mou~
+ 资金总额
+ http://demo.abc.com/APP/app_fundSum.aspx   attention：mou~
