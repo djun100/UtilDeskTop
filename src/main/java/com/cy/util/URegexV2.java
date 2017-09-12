@@ -83,7 +83,7 @@ public class URegexV2 {
      * @param beanRegex regex class method  要求：单参数且返回string的静态函数
      * @return
      */
-    public static ReplaceResult replaceByRegex(int group,String inputContent,BeanRegex beanRegex){
+    public static ReplaceResult replaceByRegex(int group,String inputContent,BeanRegex beanRegex,String formatOut){
 
         ReplaceResult replaceResult=new ReplaceResult();
         replaceResult.content=inputContent;
@@ -91,6 +91,7 @@ public class URegexV2 {
         if (beanRegex==null ||UString.isEmpty(beanRegex.regex)){
             return replaceResult;
         }
+        if (UString.isEmpty(formatOut)) formatOut="%s";
 
         //replaceAll a我b → awob   a你b → anib
         int[] groups;
@@ -121,8 +122,14 @@ public class URegexV2 {
                         .call(beanRegex.method,extract1)
                         .get();
             }
+            if (group!=0){
+                replaceResult.wordsFinal.add(deal);
+            }
+            deal=String.format(formatOut,deal);
             String after=extract0.replace(extract1,deal);
-            replaceResult.wordsFinal.add(group == 0 ? after : deal);
+            if (group==0) {
+                replaceResult.wordsFinal.add(after);
+            }
             inputContent = inputContent.replaceAll(extract0, after);
 
         }
@@ -131,10 +138,11 @@ public class URegexV2 {
         return replaceResult;
     }
 
-    public static void replaceByRegex(int group,File file,BeanRegex beanRegex){
+    public static ReplaceResult replaceByRegex(int group,File file,BeanRegex beanRegex,String formatOut){
         String content = UFile.read_UTF8(file);
-        ReplaceResult result = replaceByRegex(group,content,beanRegex);
+        ReplaceResult result = replaceByRegex(group,content,beanRegex,formatOut);
         UFile.write_UTF8(file,result.content);
+        return result;
     }
 
     public static class ReplaceResult{
@@ -144,19 +152,33 @@ public class URegexV2 {
         public ArrayList<String> wordsFinal = new ArrayList<>();
         /*** 替换前*/
         public ArrayList<String> wordsOri = new ArrayList<>();
+
+        public void print() {
+            UList.print(wordsFinal);
+            UList.print(wordsOri);
+//            System.out.println("content:"+content);
+        }
     }
 
     public static void main(String[] args){
-        testUrlDoc();
+//        testUrlDoc();
 //        testManifest();
 //        testReplace();
+        testReplaceStringToRes();
     }
 
     public static void testReplaceStringToRes(){
-        BeanRegex beanRegex=new BeanRegex("=\"([\\u4e00-\\u9fa5]+)\"");
+        BeanRegex beanRegex=new BeanRegex("=\"([\\u4e00-\\u9fa5|（|）]+)\"");
         beanRegex.clazz="com.cy.data.UString";
         beanRegex.method="hanziTopinyin";
-        replaceByRegex(1,new File(("test.xml")),beanRegex);
+//        ReplaceResult replaceResult = replaceByRegex(1,new File(("test.xml")),beanRegex,"@string/%s");
+        ReplaceResult replaceResult = replaceByRegex(1,new File(("/Users/cy/cy/projects/android/Guider/guider/src/main/res/layout/tgou_order_detail_receipt_item.xml")),beanRegex,"@string/%s");
+        replaceResult.print();
+        StringBuilder sb=new StringBuilder();
+        for (int i = 0; i < replaceResult.wordsFinal.size(); i++) {
+            sb.append(String.format("   <string name=\"modulename_%s\">%s</string>",replaceResult.wordsFinal.get(i),replaceResult.wordsOri.get(i))).append("\n");
+        }
+        System.out.println(sb.toString());
     }
 
     private static void testUrlDoc() {
@@ -184,7 +206,7 @@ public class URegexV2 {
             beanRegex1.clazz=URegexV2.class.getName();
             beanRegex1.method="test";
 
-        System.out.println(replaceByRegex(1,content,beanRegex1));
+        System.out.println(replaceByRegex(1,content,beanRegex1,null));
     }
 
     private static String test(String input){
