@@ -164,7 +164,17 @@ public class URegexV2 {
 //        testUrlDoc();
 //        testManifest();
 //        testReplace();
-        testReplaceStringToRes();
+//        testReplaceStringToRes();
+        testDocComplex();
+    }
+
+    private static void testDocComplex() {
+        String content= UFile.read_UTF8(new File("test2.txt"));
+        String regex= UFile.read_UTF8(new File("test_result_reg.txt"));
+
+        String result=extractContentByRegex(
+                regex, new int[]{1,2},content,"\n%s\n%s");
+        System.out.println(result);
     }
 
     public static void testReplaceStringToRes(){
@@ -184,8 +194,9 @@ public class URegexV2 {
     private static void testUrlDoc() {
         String content= UFile.read_UTF8(new File("test.txt"));
 
-        String result=extractContentByRegex("\\s*([\\u4e00-\\u9fa5]+)\\s*\\n" +
-                        "(\\s*http://[a-zA-Z0-9_/.]+.aspx)",
+        String result=extractContentByRegex(
+                "\\s*([\\u4e00-\\u9fa5]+)\\s*\\n" +
+                        "(\\s*http://[\\w/.]+.aspx)",
                 new int[]{1,2},content,"\n接口名称：%s\n接口地址：%s");
         System.out.println(result);
     }
