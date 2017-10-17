@@ -1,0 +1,36 @@
+模      块
+单品
+接口名称
+获取某个品指定销售属性的属性值 [编辑] [测试] [删除] [复制]
+接口地址	privates/guider/item/itemAttributeValue
+请求方式	POST
+服务对象	后台ERP系统
+参数说明	字段名	字段类型	字段说明	默认值	是否必填
+attributeId	Integer	属性id		是
+itemId	Long	营销品id		是
+示例URL	item.test.66buy.com.cn/privates/guider/item/itemAttributeValue
+示例结果	
+{
+"code": 0,
+"success": true,
+"timestamp": 1504000338965,
+"data": [
+{
+"id": 348868,
+"name": "香槟金",
+"sortOrder": 0,
+"fkAttributeId": 3384,
+"standard": 1,
+"remark": "葫芦娃",
+"standard": 1,// 1：标准库 0：非标准库
+"selected": true//是否已经选中
+},
+{
+"id": 348869,
+"name": "银色",
+"sortOrder": 0,
+"fkAttributeId": 3384,
+"standard": 1
+}
+]
+}

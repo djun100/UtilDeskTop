@@ -1,0 +1,33 @@
+模      块
+推荐
+接口名称
+通过货号名称价格查询/创建基础品 [编辑] [测试] [删除] [复制]
+接口地址	privates/guider/item/queryByProductInfo
+请求方式	POST
+服务对象	后台ERP系统
+参数说明	字段名	字段类型	字段说明	默认值	是否必填
+brandId	Integer	门店id		是
+name	String	名称		是
+barcode	String	条码		否
+price	BigDecimal	价格		是
+categoryId	Integer	分类id		是
+示例URL	item.test.66buy.com.cn/privates/guider/item/queryByProductInfo
+示例结果	
+{
+"code": 0,
+"success": true,
+"timestamp": 1501724580245,
+"data": {
+"name": "ceshi ",
+"barcode": "asd123",
+"price": 123,
+"createTime": 1501724580229,
+"state": "onshelf",
+"fkCategoryId": 102122,
+"fkBrandId": 1474,
+"creator": "",
+"weight": 0,
+"source": 1
+
+}
+}

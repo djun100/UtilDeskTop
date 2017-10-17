@@ -46,12 +46,16 @@ public class UFile {
 
 
     public static boolean write_UTF8(File file, String content) {
-        return write(file,content,"UTF-8");
+        return write(file,content,"UTF-8",false);
     }
 
-    public static boolean write(File file,String content,String charset){
+    public static boolean write_UTF8(File file, String content,boolean append) {
+        return write(file,content,"UTF-8",append);
+    }
+
+    public static boolean write(File file,String content,String charset,boolean append){
         try {
-            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file), charset);
+            OutputStreamWriter out = new OutputStreamWriter(new FileOutputStream(file,append), charset);
             out.write(content.toCharArray());
             out.flush();
             out.close();

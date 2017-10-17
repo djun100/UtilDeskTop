@@ -22,7 +22,7 @@ public class UList {
         return list == null || list.size() == 0;
     }
 
-    public static <E> List<E> convert_arrayToList(E[] array) {
+    public static <E> List<E> arrayToList(E[] array) {
 
         List<E> userList = new ArrayList<E>();
 
@@ -39,7 +39,7 @@ public class UList {
      * @param <E>
      * @return
      */
-    public static <E> E[] convert_listToArray(List<E> list) {
+    private static <E> E[] listToArray(List<E> list) {
         if (list == null || list.size() == 0) {
             return null;
         }
@@ -160,10 +160,14 @@ public class UList {
         });
     }
 
-    public  static <E> void print(List<E> list){
-        if (isEmpty(list)) return;
-        for (E e:list){
-            System.out.println(e.toString());
+    public static void removeEmptyAndTrim(List<String> list){
+        for (int i = 0; i < list.size(); i++) {
+            if (UString.isEmpty(list.get(i).trim())){
+                list.remove(i);
+                i--;
+            }else {
+                list.set(i,list.get(i).trim());
+            }
         }
     }
 }
