@@ -1,9 +1,5 @@
 package com.cy.data;
 
-import com.github.stuxuhai.jpinyin.PinyinException;
-import com.github.stuxuhai.jpinyin.PinyinFormat;
-import com.github.stuxuhai.jpinyin.PinyinHelper;
-
 import java.util.ArrayList;
 
 
@@ -230,15 +226,6 @@ public class UString {
 		if (origin==null){
 			return "";
 		}else return origin;
-	}
-
-	private static String hanziTopinyin(String tobeConvert){
-		try {
-			return PinyinHelper.convertToPinyinString(tobeConvert,"", PinyinFormat.WITHOUT_TONE);
-		} catch (PinyinException e) {
-			e.printStackTrace();
-		}
-		return "";
 	}
 
 	public static String repeat(String toRepeat,int times){
