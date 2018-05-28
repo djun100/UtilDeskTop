@@ -231,4 +231,23 @@ public class UString {
 	public static String repeat(String toRepeat,int times){
 		return new String(new char[times]).replace("\0", toRepeat);
 	}
+
+	/**用指定字符串
+	 * @param toFill
+	 * @param fillWith
+	 * @param width
+	 * @return
+	 */
+	public static String fillWithOrSub(String toFill,char fillWith,int width){
+		if (toFill == null) {
+			return UString.repeat(fillWith+"", width);
+		} else {
+			if (toFill.length() < width) {
+				return new StringBuilder(toFill).append(UString.repeat(fillWith+"", width - toFill.length())).toString();
+			} else {
+				return toFill.substring(0, width);
+			}
+		}
+	}
+
 }
