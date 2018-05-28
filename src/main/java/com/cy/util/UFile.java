@@ -6,7 +6,6 @@ import java.io.*;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Stack;
 
 /**
@@ -414,14 +413,17 @@ public class UFile {
 
     /**
      * 使用Java.nio ByteBuffer字节将一个文件输出至另一文件
+     * tips
+     * 拷贝文件夹的时候不要把目标文件夹设在原文件夹的子文件夹内，会造成复制文件为空内容
      * */
-    public static void copyFileByByteBuffer(String sourcePath, String desPath, int bufferSize) {
+    public static void copyFileByByteBuffer(String sourcePathName, String desPathName, int bufferSize) {
         FileInputStream in = null;
         FileOutputStream out = null;
+        new File(new File(desPathName).getParent()).mkdirs();
         try {
             // 获取源文件和目标文件的输入输出流
-            in = new FileInputStream(sourcePath);
-            out = new FileOutputStream(desPath);
+            in = new FileInputStream(sourcePathName);
+            out = new FileOutputStream(desPathName);
             // 获取输入输出通道
             FileChannel fcIn = in.getChannel();
             FileChannel fcOut = out.getChannel();
@@ -476,16 +478,19 @@ public class UFile {
      * <p/>
      * long time2 = getTime() ;<br>
      * System.out.println(time2-time1); }
+     *      * tips
+     *      * 拷贝文件夹的时候不要把目标文件夹设在原文件夹的子文件夹内，会造成复制文件为空内容
      */
-    public static void copyFileByByteBuffer(String sourcePath, String desPath) {
+    public static void copyFileByByteBuffer(String sourcePathName, String desPathName) {
         FileInputStream in = null;
         FileOutputStream out = null;
         int bufferSize = 1024;
         // TODO: 2015/11/27 如a/b/file file是文件，b文件夹不存在，先新建b.makedirs()
+        new File(new File(desPathName).getParent()).mkdirs();
         try {
             // 获取源文件和目标文件的输入输出流
-            in = new FileInputStream(sourcePath);
-            out = new FileOutputStream(desPath);
+            in = new FileInputStream(sourcePathName);
+            out = new FileOutputStream(desPathName);
             // 获取输入输出通道
             FileChannel fcIn = in.getChannel();
             FileChannel fcOut = out.getChannel();
@@ -543,14 +548,20 @@ public class UFile {
         return success;
     }
 
-    public static void copy(String oldPath, String newPath) {
+    /**     * tips
+     * 拷贝文件夹的时候不要把目标文件夹设在原文件夹的子文件夹内，会造成复制文件为空内容
+     * @param oriPathName
+     * @param destPathName
+     */
+    public static void copy(String oriPathName, String destPathName) {
         try {
             int bytesum = 0;
             int byteread = 0;
-            File oldfile = new File(oldPath);
+            File oldfile = new File(oriPathName);
             if (oldfile.exists()) {
-                InputStream inStream = new FileInputStream(oldPath);
-                FileOutputStream fs = new FileOutputStream(newPath);
+                new File(new File(destPathName).getParent()).mkdirs();
+                InputStream inStream = new FileInputStream(oriPathName);
+                FileOutputStream fs = new FileOutputStream(destPathName);
                 byte[] buffer = new byte[1444];
                 int length;
                 while ((byteread = inStream.read(buffer)) != -1) {
@@ -566,14 +577,20 @@ public class UFile {
         }
     }
 
-    public static void copy(File oldfile, String newPath) {
+    /**     * tips
+     * 拷贝文件夹的时候不要把目标文件夹设在原文件夹的子文件夹内，会造成复制文件为空内容
+     * @param orifile
+     * @param newPathName
+     */
+    public static void copy(File orifile, String newPathName) {
         try {
             int bytesum = 0;
             int byteread = 0;
             //File     oldfile     =     new     File(oldPath);
-            if (oldfile.exists()) {
-                InputStream inStream = new FileInputStream(oldfile);
-                FileOutputStream fs = new FileOutputStream(newPath);
+            if (orifile.exists()) {
+                new File(new File(newPathName).getParent()).mkdirs();
+                InputStream inStream = new FileInputStream(orifile);
+                FileOutputStream fs = new FileOutputStream(newPathName);
                 byte[] buffer = new byte[1444];
                 while ((byteread = inStream.read(buffer)) != -1) {
                     bytesum += byteread;
@@ -655,4 +672,5 @@ public class UFile {
         }
         return filesRlt;
     }
+
 }
