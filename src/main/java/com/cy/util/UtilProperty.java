@@ -3,7 +3,7 @@ package com.cy.util;
 import java.io.*;
 import java.util.Properties;
 
-public class PropertyHelper {
+public class UtilProperty {
     //属性文件的路径
     static String profilepath="config.properties";
     static String Object = "object";
