@@ -673,4 +673,24 @@ public class UFile {
         return filesRlt;
     }
 
+    public static String readResourcesFileContent(String resourcePathName) {
+        //resource路径必须/开头
+        resourcePathName = resourcePathName.startsWith("/") ? resourcePathName : "/" + resourcePathName;
+        StringBuilder stringBuilder = new StringBuilder();
+        InputStream is = UFile.class.getResourceAsStream(resourcePathName);
+        BufferedReader br = new BufferedReader(new InputStreamReader(is));
+        String s = "";
+        try {
+            while ((s = br.readLine()) != null) {
+                stringBuilder.append(s).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String result = stringBuilder.toString();
+        if (result.length() > 0) {
+            result = result.substring(0, result.length() - 1);
+        }
+        return result;
+    }
 }

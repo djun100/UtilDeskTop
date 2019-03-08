@@ -5,8 +5,6 @@ import com.cy.data.UString;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.LineNumberReader;
-import java.util.ArrayList;
 
 /**
  * Created by cy on 2017/6/22.
@@ -16,9 +14,9 @@ public class UCmd {
 
         String[] cmds= new String[3];
 
-        if (USystem.isLinux() || USystem.isMac()) {
+        if (UtilEnv.isLinux() || UtilEnv.isMac()) {
             cmds = new String[]{"/bin/sh","-c",cmd};
-        }else if (USystem.isWindows()){
+        }else if (UtilEnv.isWindows()){
             cmds = new String[]{"cmd","/C",cmd};
         }
 
