@@ -1,6 +1,6 @@
 package com.cy.util;
 
-import com.cy.data.UString;
+import com.cy.data.UtilString;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 /**
  * Created by cy on 2017/6/22.
  */
-public class UCmd {
+public class UtilCmd {
     public static String exec(String cmd) {
 
         String[] cmds= new String[3];
@@ -80,6 +80,6 @@ public class UCmd {
             }
 
         }
-        return UString.isEmpty(successMsg.toString())?errorMsg.toString():successMsg.toString();
+        return UtilString.isEmpty(successMsg.toString())?errorMsg.toString():successMsg.toString();
     }
 }

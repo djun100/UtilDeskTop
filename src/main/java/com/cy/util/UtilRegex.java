@@ -1,7 +1,7 @@
 package com.cy.util;
 
 
-import com.cy.data.UString;
+import com.cy.data.UtilString;
 import org.joor.Reflect;
 import ru.lanwen.verbalregex.VerbalExpression;
 
@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 /**
  * Created by cy on 2016/5/8.
  */
-public class URegex {
+public class UtilRegex {
 
     /**按正则格式提取原文中的有用信息并按正则格式返回
      * @param originLine 当前分析行内容
@@ -65,8 +65,8 @@ public class URegex {
                         keyInfo=m.group(0);
                     }
                     //若提供反射处理函数，则处理关键信息
-                    if (!UString.isEmpty(regexExtract.get(i).clazz)
-                            && !UString.isEmpty(regexExtract.get(i).method)) {
+                    if (!UtilString.isEmpty(regexExtract.get(i).clazz)
+                            && !UtilString.isEmpty(regexExtract.get(i).method)) {
                         keyInfo= Reflect
                                 .on(regexExtract.get(i).clazz)
                                 .call(regexExtract.get(i).method,keyInfo)
@@ -100,7 +100,7 @@ public class URegex {
 
         for (int i = 0; i < ss.length; i++) {
             String temp= dealLine(ss[i],lineFeature,regexExtract,formatOut);
-            if (!UString.isEmpty(temp)) {
+            if (!UtilString.isEmpty(temp)) {
                 results.add(temp);
             }
         }
@@ -120,7 +120,7 @@ public class URegex {
 
         for (int i = 0; i < ss.length; i++) {
             String temp= dealLineComplex(ss[i],lineFeature,regexExtract,formatOut);
-            if (!UString.isEmpty(temp)) {
+            if (!UtilString.isEmpty(temp)) {
                 results.add(temp);
             }
         }
@@ -170,7 +170,7 @@ public class URegex {
      * */
     public static String dealFile(String pathName,String lineFeature,ArrayList<String> regexes, String formatOut){
         File file = new File(pathName);
-        String fileContent= UFile.read_UTF8(file);
+        String fileContent= UtilFile.read_UTF8(file);
         String result=dealLines(fileContent,lineFeature,regexes,formatOut);
         return result;
     }
@@ -180,7 +180,7 @@ public class URegex {
      * */
     public static String dealFileComplex(String pathName,String lineFeature,ArrayList<BeanRegex> regexes, String formatOut){
         File file = new File(pathName);
-        String fileContent= UFile.read_UTF8(file);
+        String fileContent= UtilFile.read_UTF8(file);
         String result=dealLinesComplex(fileContent,lineFeature,regexes,formatOut);
         return result;
     }
@@ -212,7 +212,7 @@ public class URegex {
 
         ArrayList<BeanRegex> beanRegexes =new ArrayList<BeanRegex>();
         BeanRegex beanRegex1=new BeanRegex("[\\u4e00-\\u9fa5]+");
-        beanRegex1.clazz="com.cy.data.UString";
+        beanRegex1.clazz="com.cy.data.UtilString";
         beanRegex1.method="hanziTopinyin";
         beanRegexes.add(beanRegex1);
         BeanRegex beanRegex2=new BeanRegex("http://[a-zA-Z0-9_/.]+.aspx");

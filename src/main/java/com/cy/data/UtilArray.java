@@ -7,7 +7,7 @@ import java.lang.reflect.Array;
  * tips:null也占据数组长度
  *  
  */  
-public class UArray {
+public class UtilArray {
 
 	public static <E> boolean isEmpty(E[] array) {
 		if (array == null || array.length == 0) return true;

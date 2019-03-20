@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 /**
  * Created by cy on 2017/6/16.
  */
-public class UKeyBoard {
+public class UtilKeyBoard {
 
     /**按键映射，执行前延时100ms
      * @param keyPresseds

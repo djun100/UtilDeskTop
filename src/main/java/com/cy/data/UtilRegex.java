@@ -2,7 +2,7 @@ package com.cy.data;
 
 import java.util.regex.Pattern;
 
-public class URegex {
+public class UtilRegex {
     /**
      * 判断string是否是2-4字的姓名
      */

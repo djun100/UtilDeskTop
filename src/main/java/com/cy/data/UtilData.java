@@ -1,8 +1,6 @@
 package com.cy.data;
 
-import java.io.UnsupportedEncodingException;
-
-public class UByte {
+public class UtilData {
 
 	/**
 	 * 十六进制 转换 byte[]
@@ -109,7 +107,7 @@ public class UByte {
 	static public String getBCDString(byte[] data, int start, int end) {
 		byte[] t = new byte[end - start + 1];
 		System.arraycopy(data, start, t, 0, t.length);
-		return UByte.byteArray2HexString(t);
+		return UtilData.byteArray2HexString(t);
 	}
 
 	/**
@@ -123,7 +121,7 @@ public class UByte {
 	static public String getHexString(byte[] data, int start, int end) {
 		byte[] t = new byte[end - start + 1];
 		System.arraycopy(data, start, t, 0, t.length);
-		return UByte.byteArray2HexStringWithSpace(t);
+		return UtilData.byteArray2HexStringWithSpace(t);
 	}
 
     /**字符串转16进制
@@ -164,4 +162,8 @@ public class UByte {
         }
         return result;
     }
+    
+    public static String intToBytes(int i){
+    	return Integer.toBinaryString(i);
+	}
 }

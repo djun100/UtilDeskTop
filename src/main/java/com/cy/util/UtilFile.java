@@ -1,6 +1,6 @@
 package com.cy.util;
 
-import com.cy.data.UString;
+import com.cy.data.UtilString;
 
 import java.io.*;
 import java.nio.ByteBuffer;
@@ -11,7 +11,7 @@ import java.util.Stack;
 /**
  * @author djun100
  */
-public class UFile {
+public class UtilFile {
 
     public static void main(String[] args) {
         //test 遍历文件夹
@@ -363,7 +363,7 @@ public class UFile {
     }
 
     public static String getUrlExtension(String url) {
-        if (!UString.isEmpty(url)) {
+        if (!UtilString.isEmpty(url)) {
             int i = url.lastIndexOf('.');
             if (i > 0 && i < url.length() - 1) {
                 return url.substring(i + 1).toLowerCase();
@@ -383,7 +383,7 @@ public class UFile {
     }
     /**@param format %.20f 小数点后20位*/
     public static String showFileSize(long size,String format) {
-        if (UString.isEmpty(format)) format="%.1f";
+        if (UtilString.isEmpty(format)) format="%.1f";
         final double KB = 1024.0;
         final double MB = KB * KB;
         final double GB = KB * KB * KB;
@@ -637,7 +637,7 @@ public class UFile {
      * @param suffix    后缀名
      */
     public static ArrayList<File> getFiles(File file,String suffix){
-        if (UString.notEmpty(suffix)) {
+        if (UtilString.notEmpty(suffix)) {
             if (!suffix.startsWith(".")){
                 suffix="."+suffix;
             }
@@ -677,7 +677,7 @@ public class UFile {
         //resource路径必须/开头
         resourcePathName = resourcePathName.startsWith("/") ? resourcePathName : "/" + resourcePathName;
         StringBuilder stringBuilder = new StringBuilder();
-        InputStream is = UFile.class.getResourceAsStream(resourcePathName);
+        InputStream is = UtilFile.class.getResourceAsStream(resourcePathName);
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
         String s = "";
         try {

@@ -7,7 +7,7 @@ import java.io.IOException;
 /**
  * Created by cy on 2017/6/16.
  */
-public class UClipBoard {
+public class UtilClipBoard {
 
     public static void write(String content) {
         Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

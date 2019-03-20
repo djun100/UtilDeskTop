@@ -9,7 +9,7 @@ import java.util.Enumeration;
 /**
  * Created by cy on 2016/1/26.
  */
-public class UUI {
+public class UtilUI {
 
     public static FontUIResource preferFont(){
         Dimension curr=getScreenSize();

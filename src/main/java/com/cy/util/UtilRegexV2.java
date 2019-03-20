@@ -1,9 +1,9 @@
 package com.cy.util;
 
 
-import com.cy.data.UArray;
-import com.cy.data.UList;
-import com.cy.data.UString;
+import com.cy.data.UtilArray;
+import com.cy.data.UtilList;
+import com.cy.data.UtilString;
 import org.joor.Reflect;
 
 import java.io.File;
@@ -14,12 +14,12 @@ import java.util.regex.Pattern;
 /**
  * Created by cy on 2017/8/29.
  */
-public class URegexV2 {
+public class UtilRegexV2 {
 
     public static ArrayList<ArrayList<String>> extractListByRegex(String regex,int[] groups,String inputContent){
         ArrayList<String> contents=new ArrayList<>();
         ArrayList<ArrayList<String>> results=new ArrayList<>();
-        if (UString.isEmpty(regex)){
+        if (UtilString.isEmpty(regex)){
             results.add(contents);
             return results;
         }
@@ -28,7 +28,7 @@ public class URegexV2 {
         while (matcher.find()){
             ArrayList<String> oneFindResults=new ArrayList<>();
 
-            if (UArray.isEmpty(groups)){
+            if (UtilArray.isEmpty(groups)){
                 oneFindResults.add(matcher.group());
             }else {
 
@@ -65,7 +65,7 @@ public class URegexV2 {
     public static String extractContentByRegex(String regex,int[] groups,String inputContent,String outputFormat){
         ArrayList<String> lines=extractLinesByRegex(regex,groups,inputContent,outputFormat);
         StringBuilder resultBuilder=new StringBuilder();
-        if (UList.notEmpty(lines)) {
+        if (UtilList.notEmpty(lines)) {
             resultBuilder.append(lines.get(0));
         }
         for (int i = 1; i < lines.size(); i++) {
@@ -85,10 +85,10 @@ public class URegexV2 {
         ReplaceResult replaceResult=new ReplaceResult();
         replaceResult.content=inputContent;
 
-        if (beanRegex==null ||UString.isEmpty(beanRegex.regex)){
+        if (beanRegex==null || UtilString.isEmpty(beanRegex.regex)){
             return replaceResult;
         }
-        if (UString.isEmpty(formatOut)) formatOut="%s";
+        if (UtilString.isEmpty(formatOut)) formatOut="%s";
 
         //replaceAll a我b → awob   a你b → anib
         int[] groups;
@@ -113,7 +113,7 @@ public class URegexV2 {
             wordsOri.add(extract1);
             //deal list:a我b 我
             String deal = "";
-            if (UString.notEmpty(beanRegex.clazz) && UString.notEmpty(beanRegex.method)) {
+            if (UtilString.notEmpty(beanRegex.clazz) && UtilString.notEmpty(beanRegex.method)) {
                 deal= Reflect
                         .on(beanRegex.clazz)
                         .call(beanRegex.method,extract1)
@@ -136,9 +136,9 @@ public class URegexV2 {
     }
 
     public static ReplaceResult replaceByRegex(int group,File file,BeanRegex beanRegex,String formatOut){
-        String content = UFile.read_UTF8(file);
+        String content = UtilFile.read_UTF8(file);
         ReplaceResult result = replaceByRegex(group,content,beanRegex,formatOut);
-        UFile.write_UTF8(file,result.content);
+        UtilFile.write_UTF8(file,result.content);
         return result;
     }
 

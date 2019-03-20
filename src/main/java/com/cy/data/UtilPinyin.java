@@ -4,7 +4,7 @@ import com.github.stuxuhai.jpinyin.PinyinException;
 import com.github.stuxuhai.jpinyin.PinyinFormat;
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 
-public class UPinyin {
+public class UtilPinyin {
 
     public static String hanziTopinyin(String tobeConvert){
         try {

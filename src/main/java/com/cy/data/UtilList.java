@@ -12,7 +12,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class UList {
+public class UtilList {
 
     public static <E> boolean notEmpty(List<E> list) {
         return list != null && list.size() > 0;
@@ -162,7 +162,7 @@ public class UList {
 
     public static void removeEmptyAndTrim(List<String> list){
         for (int i = 0; i < list.size(); i++) {
-            if (UString.isEmpty(list.get(i).trim())){
+            if (UtilString.isEmpty(list.get(i).trim())){
                 list.remove(i);
                 i--;
             }else {

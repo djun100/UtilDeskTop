@@ -9,7 +9,7 @@ import java.util.Random;
  * Created by <a href="https://github.com/djun100">cy</a> on 2016/5/21.
  */
 
-public class UDummyData {
+public class UtilDummyData {
 
     /**
      * @param min

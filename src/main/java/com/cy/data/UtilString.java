@@ -3,7 +3,7 @@ package com.cy.data;
 import java.util.ArrayList;
 
 
-public class UString {
+public class UtilString {
 	public static String join(final ArrayList<String> array, String separator) {
 		StringBuffer result = new StringBuffer();
 		if (array != null && array.size() > 0) {
@@ -105,7 +105,7 @@ public class UString {
 		 * @return
 		 */
 		public static boolean toBoolean(String str, boolean def) {
-			if (UString.isEmpty(str))
+			if (UtilString.isEmpty(str))
 				return def;
 			if ("false".equalsIgnoreCase(str) || "0".equals(str))
 				return false;
@@ -133,7 +133,7 @@ public class UString {
 		 * @return
 		 */
 		public static float toFloat(String str, float def) {
-			if (UString.isEmpty(str))
+			if (UtilString.isEmpty(str))
 				return def;
 			try {
 				return Float.parseFloat(str);
@@ -160,7 +160,7 @@ public class UString {
 		 * @return
 		 */
 		public static long toLong(String str, long def) {
-			if (UString.isEmpty(str))
+			if (UtilString.isEmpty(str))
 				return def;
 			try {
 				return Long.parseLong(str);
@@ -187,7 +187,7 @@ public class UString {
 		 * @return
 		 */
 		public static short toShort(String str, short def) {
-			if (UString.isEmpty(str))
+			if (UtilString.isEmpty(str))
 				return def;
 			try {
 				return Short.parseShort(str);
@@ -214,7 +214,7 @@ public class UString {
 		 * @return
 		 */
 		public static int toInt(String str, int def) {
-			if (UString.isEmpty(str))
+			if (UtilString.isEmpty(str))
 				return def;
 			try {
 				return Integer.parseInt(str);
@@ -240,10 +240,10 @@ public class UString {
 	 */
 	public static String fillWithOrSub(String toFill,char fillWith,int width){
 		if (toFill == null) {
-			return UString.repeat(fillWith+"", width);
+			return UtilString.repeat(fillWith+"", width);
 		} else {
 			if (toFill.length() < width) {
-				return new StringBuilder(toFill).append(UString.repeat(fillWith+"", width - toFill.length())).toString();
+				return new StringBuilder(toFill).append(UtilString.repeat(fillWith+"", width - toFill.length())).toString();
 			} else {
 				return toFill.substring(0, width);
 			}
