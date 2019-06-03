@@ -1,13 +1,16 @@
 package com.cy.util;
 
 
+import com.cy.data.UtilCollection;
 import com.cy.data.UtilString;
 import org.joor.Reflect;
 import ru.lanwen.verbalregex.VerbalExpression;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -212,7 +215,7 @@ public class UtilRegex {
 
         ArrayList<BeanRegex> beanRegexes =new ArrayList<BeanRegex>();
         BeanRegex beanRegex1=new BeanRegex("[\\u4e00-\\u9fa5]+");
-        beanRegex1.clazz="com.cy.data.UtilString";
+        beanRegex1.clazz="com.cy.data.UtilPinyin";
         beanRegex1.method="hanziTopinyin";
         beanRegexes.add(beanRegex1);
         BeanRegex beanRegex2=new BeanRegex("http://[a-zA-Z0-9_/.]+.aspx");
@@ -304,8 +307,55 @@ public class UtilRegex {
     public static void main(String[] args){
 //        testUrlExtract();
 //        testAttrToStyle();
-            testMultiLine();
+//            testMultiLine();
 //        testDealFile();
 //        testExtractPkgName();
+        regexTest();
+    }
+
+    /**正则批量提取
+     key:bird value:鸟
+     名词
+     key:dolala value:
+     人名
+     杜拉拉
+     key:dog value:狗
+     名词
+     */
+    public static void regexTest() {
+        String filetext =
+                "1@bird@鸟\n" +
+                "名词\n" +
+                "2@dolala@\n" +
+                "人名\n" +
+                "杜拉拉\n" +
+                "390@dog@狗\n" +
+                "名词\n" +
+                "0@";
+        Map<String,String> wordsAndTrans=new LinkedHashMap<>();
+        List<String> words=new ArrayList<>();
+        List<String> trans=new ArrayList<>();
+        Pattern p = Pattern.compile("\\d+@(.+)@");
+        Matcher m = p.matcher(filetext);
+        while (m.find()) {
+            String word=m.group(1);
+            System.out.println("find:"+word);
+            words.add(word);
+        }
+
+        //使用？问号指定非贪婪匹配，尽可能少重复即匹配
+        Pattern p2 = Pattern.compile("\\D@((.|\\n)+?)\\d+@");
+        Matcher m2 = p2.matcher(filetext);
+        while (m2.find()) {
+            String tran=m2.group(1);
+            System.out.println("find:"+tran);
+            trans.add(tran);
+        }
+
+        for (int i = 0; i < words.size(); i++) {
+            wordsAndTrans.put(words.get(i),trans.get(i));
+        }
+
+        System.out.println(UtilCollection.toString(wordsAndTrans));
     }
 }

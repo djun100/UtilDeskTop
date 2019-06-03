@@ -21,8 +21,7 @@ public class RegexExam {
         }  
     }  
   
-    public static String composeMessage(String template, Map data)
-            throws Exception {  
+    public static String composeMessage(String template, Map data) throws Exception {
         String regex = "\\$\\{(.+?)\\}";  
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(template);
