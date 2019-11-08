@@ -11,12 +11,12 @@ import java.io.InputStreamReader;
  */
 public class UtilCmd {
     public static String exec(String cmd) {
-
+        boolean isWindows = UtilEnv.isWindows();
         String[] cmds= new String[3];
 
         if (UtilEnv.isLinux() || UtilEnv.isMac()) {
             cmds = new String[]{"/bin/sh","-c",cmd};
-        }else if (UtilEnv.isWindows()){
+        }else if (isWindows){
             cmds = new String[]{"cmd","/C",cmd};
         }
 
@@ -29,12 +29,19 @@ public class UtilCmd {
         boolean hasErrorMsg=false;
 
         try {
-            process = Runtime.getRuntime().exec(cmds);
+            if (cmd.split(" ")[0].endsWith(".exe")){
+                cmds = cmd.split(" ");
+                process = Runtime.getRuntime().exec(cmds);
+            }else {
+                process = Runtime.getRuntime().exec(cmds);
+            }
 
             successMsg = new StringBuilder();
             errorMsg = new StringBuilder();
-            successResult = new BufferedReader(new InputStreamReader(process.getInputStream()));
-            errorResult = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+            successResult = new BufferedReader(
+                    new InputStreamReader(process.getInputStream(),isWindows?"GBK":"utf-8"));
+            errorResult = new BufferedReader(
+                    new InputStreamReader(process.getErrorStream(),isWindows?"GBK":"utf-8"));
             String s;
 
             while ((s = successResult.readLine()) != null) {
